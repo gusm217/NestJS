@@ -24,7 +24,7 @@
 
 ## Description and observations
 
-Observation: need to uncomment postgres database on 'app.module' file.
+Observation: need to uncomment postgres database on 'app.module' file. <br />
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
 ## Installation

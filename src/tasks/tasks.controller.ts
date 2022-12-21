@@ -8,7 +8,6 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { TaskStatus } from './task-status.enum';
 import { TasksService } from './tasks.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { GetTasksFilterDto } from './dto/get-tasks-filter.dto';
@@ -19,41 +18,32 @@ import { Task } from './task.entity';
 export class TasksController {
   constructor(private tasksService: TasksService) { }
 
-  // @Get()
-  // getTasks(@Query() filtersDto: GetTasksFilterDto): Task[] {
-  //   if (Object.keys(filtersDto).length) {
-  //     return this.tasksService.getAllTasksWithFilters(filtersDto);
-  //   }
-
-  //   return this.tasksService.getAllTasks();
-  // }
+  @Get()
+  getTasks(@Query() filtersDto: GetTasksFilterDto): Promise<Task[]> {
+    return this.tasksService.getTasks(filtersDto);
+  }
 
   @Get('/:id')
   getTaskById(@Param('id') id: string): Promise<Task> {
     return this.tasksService.getTaskById(id);
   }
 
-  // @Get('/:id')
-  // getTaskById(@Param('id') id: string): Task {
-  //   return this.tasksService.getTaskById(id);
-  // }
+  @Post()
+  createNewTask(@Body() createTaskDto: CreateTaskDto): Promise<Task> {
+    return this.tasksService.createNewTask(createTaskDto);
+  }
 
-  // @Post()
-  // createNewTask(@Body() createTaskDto: CreateTaskDto): Task {
-  //   return this.tasksService.createNewTask(createTaskDto);
-  // }
+  @Delete('/:id')
+  deleteTask(@Param('id') id: string): Promise<Task> {
+    return this.tasksService.deleteTask(id);
+  }
 
-  // @Delete('/:id')
-  // deleteTask(@Param('id') id: string): Task[] {
-  //   return this.tasksService.deleteTask(id);
-  // }
-
-  // @Patch('/:id/status')
-  // updateTaskStatus(
-  //   @Param('id') id: string,
-  //   @Body() updateTaskStatusDto: UpdateTaskStatusDto,
-  // ): Task {
-  //   const { status } = updateTaskStatusDto;
-  //   return this.tasksService.updateTaskStatus(id, status);
-  // }
+  @Patch('/:id/status')
+  updateTaskStatus(
+    @Param('id') id: string,
+    @Body() updateTaskStatusDto: UpdateTaskStatusDto,
+  ): Promise<Task> {
+    const { status } = updateTaskStatusDto;
+    return this.tasksService.updateTaskStatus(id, status);
+  }
 }
